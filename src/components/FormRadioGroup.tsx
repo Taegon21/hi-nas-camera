@@ -3,7 +3,8 @@ import { FormSchema } from "@/schemas/form-schema";
 import { FormField } from "@/types/form";
 import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
 import { FormErrorMessage } from "@/components/FormErrorMessage";
-import { getFieldErrorMessage } from "@/shared/utils/form-error";
+import { getFieldErrorMessage, hasFieldError } from "@/shared/utils/form-error";
+import { twMerge as tw } from "tailwind-merge";
 
 export const FormRadioGroup = ({ field }: { field: FormField }) => {
   const {
@@ -14,13 +15,16 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
 
   const options = name === "ship_type" ? SHIP_OPTIONS : ENGINE_OPTIONS;
   const errorMessage = getFieldErrorMessage(errors, name);
+  const hasError = hasFieldError(errors, name);
 
   return (
-    <div>
-      <div className="font-bold">{label}</div>
-      <div className="mt-4 flex flex-col gap-3">
+    <div className="space-y-4">
+      <div className={tw("font-bold", hasError ? "text-destructive" : "text-foreground")}>
+        {label}
+      </div>
+      <div className="space-y-4">
         {options.map((option) => (
-          <div key={option.value} className="mb-4 flex items-center">
+          <div key={option.value} className="flex items-center">
             <div className="relative flex items-center">
               <input
                 id={`${name}-${option.value}`}
@@ -33,7 +37,10 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
             </div>
             <label
               htmlFor={`${name}-${option.value}`}
-              className="block cursor-pointer pl-2 text-sm font-medium text-gray-900"
+              className={tw(
+                "block cursor-pointer pl-2 text-sm font-medium",
+                hasError ? "text-destructive" : "text-foreground"
+              )}
             >
               {option.label}
             </label>

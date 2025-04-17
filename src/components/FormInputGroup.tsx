@@ -1,9 +1,10 @@
 import { useFormContext } from "react-hook-form";
 import { FormSchema } from "@/schemas/form-schema";
 import { FormField } from "@/types/form";
-import { getFieldErrorMessage } from "@/shared/utils/form-error";
+import { getFieldErrorMessage, hasFieldError } from "@/shared/utils/form-error";
 import { FormErrorMessage } from "@/components/FormErrorMessage";
 import { getFieldPlaceholder } from "@/shared/utils/form-placeholder";
+import { twMerge as tw } from "tailwind-merge";
 
 const formatDisplayLabel = (category: string, label: string): string => {
   if (!category.includes("Cam")) return label;
@@ -31,16 +32,22 @@ export const FormInputGroup = ({ field }: { field: FormField }) => {
   const errorMessage = getFieldErrorMessage(errors, name);
   const displayLabel = formatDisplayLabel(category, label);
   const placeholder = getFieldPlaceholder(category, name);
+  const hasError = hasFieldError(errors, name);
 
   return (
-    <div>
-      <div className={"font-bold"}>{displayLabel}</div>
+    <div className="space-y-2">
+      <div className={tw("font-bold", hasError ? "text-destructive" : "text-foreground")}>
+        {displayLabel}
+      </div>
       <input
         type={type === "number" ? "number" : "text"}
         {...register(name as keyof FormSchema, {
           valueAsNumber: type === "number",
         })}
-        className={"w-full rounded-md border-2 p-2"}
+        className={tw(
+          "w-full rounded-md border-2 p-2",
+          hasError ? "border-destructive" : "border-input"
+        )}
         placeholder={placeholder}
       />
       <FormErrorMessage error={errorMessage} />
