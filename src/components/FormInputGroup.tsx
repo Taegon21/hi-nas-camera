@@ -45,8 +45,10 @@ export const FormInputGroup = ({ field }: { field: FormField }) => {
           valueAsNumber: type === "number",
         })}
         className={tw(
-          "w-full rounded-md border-2 p-2",
-          hasError ? "border-destructive" : "border-input"
+          "w-full rounded-md border-2 p-2 focus:ring-3 focus:outline-none",
+          hasError
+            ? "border-destructive focus:border-destructive focus:ring-destructive/30"
+            : "border-input focus:border-ring focus:ring-ring/30"
         )}
         placeholder={placeholder}
       />
