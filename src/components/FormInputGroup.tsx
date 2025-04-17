@@ -3,6 +3,7 @@ import { FormSchema } from "@/schemas/form-schema";
 import { FormField } from "@/types/form";
 import { getFieldErrorMessage } from "@/shared/utils/form-error";
 import { FormErrorMessage } from "@/components/FormErrorMessage";
+import { getFieldPlaceholder } from "@/shared/utils/form-placeholder";
 
 const formatDisplayLabel = (category: string, label: string): string => {
   if (!category.includes("Cam")) return label;
@@ -24,10 +25,12 @@ export const FormInputGroup = ({ field }: { field: FormField }) => {
     register,
     formState: { errors },
   } = useFormContext<FormSchema>();
+
   const { category, name, label, type } = field;
 
   const errorMessage = getFieldErrorMessage(errors, name);
   const displayLabel = formatDisplayLabel(category, label);
+  const placeholder = getFieldPlaceholder(category, name);
 
   return (
     <div>
@@ -38,6 +41,7 @@ export const FormInputGroup = ({ field }: { field: FormField }) => {
           valueAsNumber: type === "number",
         })}
         className={"w-full rounded-md border-2 p-2"}
+        placeholder={placeholder}
       />
       <FormErrorMessage error={errorMessage} />
     </div>
