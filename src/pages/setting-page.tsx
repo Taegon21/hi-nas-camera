@@ -19,7 +19,7 @@ export const SettingPage = () => {
 
   return (
     <div className="mx-auto max-w-xl p-6">
-      <h2 className="mb-6 text-3xl font-bold">Camera Parameter</h2>
+      <h2 className="mb-12 text-3xl font-bold">Camera Parameter</h2>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-12">
           {Object.entries(fieldsByCategory).map(([category, fields]) => (
