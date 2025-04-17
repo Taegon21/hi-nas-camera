@@ -73,12 +73,12 @@ const schemaCreators = {
 
 export const formSchema = z.object({
   ship_name: schemaCreators.string(CATEGORIES.SHIP_INFORMATION, "ship_name"),
-  ship_type: schemaCreators.shipType(),
   call_sign: schemaCreators.string(CATEGORIES.SHIP_INFORMATION, "call_sign"),
-  engine: schemaCreators.engineType(),
+  ship_type: schemaCreators.shipType(),
   length: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "length"),
   beam: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "beam"),
   draft: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "draft"),
+  engine: schemaCreators.engineType(),
   cam_fx: schemaCreators.cameraArray(CATEGORIES.CAM_FOCAL_LENGTH),
   cam_fy: schemaCreators.cameraArray(CATEGORIES.CAM_FOCAL_LENGTH),
   cam_px: schemaCreators.cameraArray(CATEGORIES.CAM_PRINCIPAL_LENGTH),
