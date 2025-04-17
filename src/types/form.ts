@@ -4,6 +4,11 @@ export type EngineType = "single" | "twin";
 
 export type FieldType = "text" | "radio" | "number";
 
+export interface FormOption<T extends string> {
+  value: T;
+  label: string;
+}
+
 export interface FormField {
   category: string;
   name: string;
