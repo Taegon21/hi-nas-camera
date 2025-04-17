@@ -2,6 +2,8 @@ import { useFormContext } from "react-hook-form";
 import { FormSchema } from "@/schemas/form-schema";
 import { FormField } from "@/types/form";
 import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
+import { FormErrorMessage } from "@/components/FormErrorMessage";
+import { getFieldErrorMessage } from "@/shared/utils/form-error";
 
 export const FormRadioGroup = ({ field }: { field: FormField }) => {
   const {
@@ -11,6 +13,7 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
   const { name, label } = field;
 
   const options = name === "ship_type" ? SHIP_OPTIONS : ENGINE_OPTIONS;
+  const errorMessage = getFieldErrorMessage(errors, name);
 
   return (
     <div>
@@ -37,9 +40,7 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
           </div>
         ))}
       </div>
-      {errors[name as keyof FormSchema] && (
-        <p className="text-destructive mt-1 text-sm">{errors[name as keyof FormSchema]?.message}</p>
-      )}
+      <FormErrorMessage error={errorMessage} />
     </div>
   );
 };
