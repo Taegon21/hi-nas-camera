@@ -1,4 +1,5 @@
 import { Outlet } from "react-router";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Template = () => {
   return (
@@ -6,6 +7,7 @@ export const Template = () => {
       <div className="bg-background/60 sticky top-0 right-0 left-0 border-b-1 border-dashed px-10 backdrop-blur-xs">
         <div className="flex justify-between border-x-1 border-dashed px-8 py-4">
           <span className="text-foreground text-xl font-bold">HiNAS Camera</span>
+          <ThemeToggle />
         </div>
       </div>
 
