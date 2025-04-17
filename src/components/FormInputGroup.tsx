@@ -4,18 +4,34 @@ import { FormField } from "@/types/form";
 import { getFieldErrorMessage } from "@/shared/utils/form-error";
 import { FormErrorMessage } from "@/components/FormErrorMessage";
 
+const formatDisplayLabel = (category: string, label: string): string => {
+  if (!category.includes("Cam")) return label;
+
+  let position = "";
+  if (label.includes("Left")) position = "Left";
+  else if (label.includes("Center")) position = "Center";
+  else if (label.includes("Right")) position = "Right";
+
+  let axis = "";
+  if (label.includes("X")) axis = "X";
+  else if (label.includes("Y")) axis = "Y";
+
+  return `${position} ${axis}`;
+};
+
 export const FormInputGroup = ({ field }: { field: FormField }) => {
   const {
     register,
     formState: { errors },
   } = useFormContext<FormSchema>();
-  const { name, label, type } = field;
+  const { category, name, label, type } = field;
 
   const errorMessage = getFieldErrorMessage(errors, name);
+  const displayLabel = formatDisplayLabel(category, label);
 
   return (
     <div>
-      <div className={"font-bold"}>{label}</div>
+      <div className={"font-bold"}>{displayLabel}</div>
       <input
         type={type === "number" ? "number" : "text"}
         {...register(name as keyof FormSchema, {
