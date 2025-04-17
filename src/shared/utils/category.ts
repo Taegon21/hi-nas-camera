@@ -13,3 +13,16 @@ export function extractCategories(
     {} as Record<string, string>
   );
 }
+
+export function groupFieldsByCategory(fields: FormField[]): Record<string, FormField[]> {
+  return fields.reduce(
+    (acc, field) => {
+      if (!acc[field.category]) {
+        acc[field.category] = [];
+      }
+      acc[field.category].push(field);
+      return acc;
+    },
+    {} as Record<string, FormField[]>
+  );
+}
