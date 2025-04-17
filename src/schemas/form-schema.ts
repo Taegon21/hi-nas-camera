@@ -1,89 +1,81 @@
 import { z } from "zod";
-import type { FormDataType } from "@/types/form";
-import { SHIP_TYPE_VALUES, ENGINE_TYPE_VALUES } from "@/constants/form-options";
-import { CATEGORY_ERROR_MESSAGES, SHARED } from "@/constants/form-error-messages";
-import { FORM_FIELDS } from "@/constants/form-fields";
-import { extractCategories } from "@/shared/utils/category";
+import { FormDataType, FormOption } from "@/types/form";
+import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
+import { ERROR_MESSAGES } from "@/constants/form-error-messages";
 
-const CATEGORIES = extractCategories(FORM_FIELDS);
+const createInvalidMessage = (fieldName: string): string =>
+  `${ERROR_MESSAGES.INVALID} ${fieldName}`;
 
-const getErrorMessage = (category: string, fieldName?: string): string => {
-  const messages = CATEGORY_ERROR_MESSAGES[category];
-
-  return fieldName && messages[fieldName]
-    ? messages[fieldName]
-    : messages.messages || messages.default;
+const createRadioErrorMessage = (options: FormOption<string>[]): string => {
+  if (options.length === 0) return ERROR_MESSAGES.DEFAULT;
+  if (options[0].label === undefined) return ERROR_MESSAGES.DEFAULT;
+  return `${ERROR_MESSAGES.INVALID_LITERAL} "${options[0].label}"`;
 };
 
 const schemaCreators = {
-  string: (category: string, fieldName: string) =>
+  string: (fieldName: string) =>
     z
       .string({
-        required_error: SHARED.REQUIRED,
+        required_error: ERROR_MESSAGES.DEFAULT,
       })
-      .min(1, getErrorMessage(category, fieldName)),
+      .min(1, createInvalidMessage(fieldName)),
 
-  number: (category: string, fieldName?: string) =>
+  number: () =>
     z
       .number({
-        required_error: SHARED.REQUIRED,
-        invalid_type_error: SHARED.INVALID_NUMBER,
+        required_error: ERROR_MESSAGES.DEFAULT,
+        invalid_type_error: ERROR_MESSAGES.INVALID_NUMBER,
       })
-      .positive(getErrorMessage(category, fieldName || "messages")),
+      .positive(ERROR_MESSAGES.POSITIVE),
 
-  angle: (category: string, fieldName?: string) =>
+  angle: () =>
     z
       .number({
-        required_error: SHARED.REQUIRED,
-        invalid_type_error: SHARED.INVALID_NUMBER,
+        required_error: ERROR_MESSAGES.DEFAULT,
+        invalid_type_error: ERROR_MESSAGES.INVALID_NUMBER,
       })
-      .min(-180, getErrorMessage(category, fieldName || "messages"))
-      .max(180, getErrorMessage(category, fieldName || "messages")),
+      .min(-180, ERROR_MESSAGES.ANGLE_RANGE)
+      .max(180, ERROR_MESSAGES.ANGLE_RANGE),
 
-  shipType: () =>
-    z.enum(SHIP_TYPE_VALUES, {
-      errorMap: () => ({ message: getErrorMessage(CATEGORIES.SHIP_INFORMATION, "ship_type") }),
+  radioType: <T extends string>(values: FormOption<T>[]) =>
+    z.enum([...values.map((option) => option.value)] as [T, ...T[]], {
+      errorMap: () => ({ message: createRadioErrorMessage(values) }),
     }),
 
-  engineType: () =>
-    z.enum(ENGINE_TYPE_VALUES, {
-      errorMap: () => ({ message: getErrorMessage(CATEGORIES.SHIP_INFORMATION, "engine") }),
-    }),
-
-  cameraArray: (category: string) =>
+  cameraArray: () =>
     z.tuple([
-      schemaCreators.number(category), // Left Camera
-      schemaCreators.number(category), // Center Camera
-      schemaCreators.number(category), // Right Camera
+      schemaCreators.number(), // Left Camera
+      schemaCreators.number(), // Center Camera
+      schemaCreators.number(), // Right Camera
     ]),
 
-  rpyArray: (category: string) =>
+  rpyArray: () =>
     z.tuple([
-      schemaCreators.angle(category), // Left Roll
-      schemaCreators.angle(category), // Left Yaw
-      schemaCreators.angle(category), // Left Pitch
-      schemaCreators.angle(category), // Center Roll
-      schemaCreators.angle(category), // Center Yaw
-      schemaCreators.angle(category), // Center Pitch
-      schemaCreators.angle(category), // Right Roll
-      schemaCreators.angle(category), // Right Yaw
-      schemaCreators.angle(category), // Right Pitch
+      schemaCreators.angle(), // Left Roll
+      schemaCreators.angle(), // Left Yaw
+      schemaCreators.angle(), // Left Pitch
+      schemaCreators.angle(), // Center Roll
+      schemaCreators.angle(), // Center Yaw
+      schemaCreators.angle(), // Center Pitch
+      schemaCreators.angle(), // Right Roll
+      schemaCreators.angle(), // Right Yaw
+      schemaCreators.angle(), // Right Pitch
     ]),
 };
 
 export const formSchema = z.object({
-  ship_name: schemaCreators.string(CATEGORIES.SHIP_INFORMATION, "ship_name"),
-  call_sign: schemaCreators.string(CATEGORIES.SHIP_INFORMATION, "call_sign"),
-  ship_type: schemaCreators.shipType(),
-  length: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "length"),
-  beam: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "beam"),
-  draft: schemaCreators.number(CATEGORIES.SHIP_INFORMATION, "draft"),
-  engine: schemaCreators.engineType(),
-  cam_fx: schemaCreators.cameraArray(CATEGORIES.CAM_FOCAL_LENGTH),
-  cam_fy: schemaCreators.cameraArray(CATEGORIES.CAM_FOCAL_LENGTH),
-  cam_px: schemaCreators.cameraArray(CATEGORIES.CAM_PRINCIPAL_LENGTH),
-  cam_py: schemaCreators.cameraArray(CATEGORIES.CAM_PRINCIPAL_LENGTH),
-  rpy: schemaCreators.rpyArray(CATEGORIES.ROLL_PITCH_YAW),
+  ship_name: schemaCreators.string("ship name"),
+  call_sign: schemaCreators.string("call sign"),
+  ship_type: schemaCreators.radioType(SHIP_OPTIONS),
+  length: schemaCreators.number(),
+  beam: schemaCreators.number(),
+  draft: schemaCreators.number(),
+  engine: schemaCreators.radioType(ENGINE_OPTIONS),
+  cam_fx: schemaCreators.cameraArray(),
+  cam_fy: schemaCreators.cameraArray(),
+  cam_px: schemaCreators.cameraArray(),
+  cam_py: schemaCreators.cameraArray(),
+  rpy: schemaCreators.rpyArray(),
 }) satisfies z.ZodType<FormDataType>;
 
 export type FormSchema = z.infer<typeof formSchema>;
