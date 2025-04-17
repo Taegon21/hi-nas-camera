@@ -17,12 +17,14 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
   const errorMessage = getFieldErrorMessage(errors, name);
   const hasError = hasFieldError(errors, name);
 
+  const isHorizontalLayout = options.length <= 2;
+
   return (
     <div className="space-y-4">
       <div className={tw("font-bold", hasError ? "text-destructive" : "text-foreground")}>
         {label}
       </div>
-      <div className="space-y-4">
+      <div className={isHorizontalLayout ? "flex space-x-6" : "space-y-4"}>
         {options.map((option) => (
           <div key={option.value} className="flex items-center">
             <div className="relative flex items-center">
