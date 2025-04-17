@@ -37,7 +37,9 @@ export const ThemeToggle = () => {
           }`}
         />
       </div>
-      <span className="ml-2 text-sm font-medium">{isDarkMode ? "dark" : "light"}</span>
+      <span className="ml-2 hidden text-sm font-medium sm:inline">
+        {isDarkMode ? "dark" : "light"}
+      </span>
     </button>
   );
 };
