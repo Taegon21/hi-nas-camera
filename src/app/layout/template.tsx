@@ -1,12 +1,13 @@
 import { Outlet } from "react-router";
-import { ThemeToggle } from "@/components/ThemeToggle";
+import { ThemeToggle } from "@/components/common/ThemeToggle";
+import { UI_STRINGS } from "@/constants/ui-string";
 
 export const Template = () => {
   return (
     <div className="flex min-h-full flex-col">
       <div className="bg-background/60 sticky top-0 right-0 left-0 border-b-1 border-dashed px-10 backdrop-blur-xs">
         <div className="flex justify-between border-x-1 border-dashed px-8 py-4">
-          <span className="text-foreground text-xl font-bold">HiNAS Camera</span>
+          <span className="text-foreground text-xl font-bold">{UI_STRINGS.BRAND_NAME}</span>
           <ThemeToggle />
         </div>
       </div>

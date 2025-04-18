@@ -1,3 +1,4 @@
+import { UI_STRINGS } from "@/constants/ui-string";
 import { useState, useLayoutEffect } from "react";
 
 export const ThemeToggle = () => {
@@ -38,7 +39,7 @@ export const ThemeToggle = () => {
         />
       </div>
       <span className="ml-2 hidden text-sm font-medium sm:inline">
-        {isDarkMode ? "dark" : "light"}
+        {isDarkMode ? UI_STRINGS.THEME_DARK : UI_STRINGS.THEME_LIGHT}
       </span>
     </button>
   );
