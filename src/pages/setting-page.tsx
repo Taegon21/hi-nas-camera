@@ -3,10 +3,10 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, FormSchema } from "@/schemas/form-schema";
 import { FORM_FIELDS } from "@/constants/form-fields";
-import { FormSection } from "@/components/FormSection";
+import { SettingFormSection } from "@/components/setting-page/SettingFormSection";
 import { groupFieldsByCategory, sortFieldsByOrder } from "@/shared/utils/form-fields-utils";
-import { CustomButton } from "@/components/CustomButton";
-import { ParameterViewModal } from "@/components/ParameterViewModal";
+import { CustomButton } from "@/components/common/CustomButton";
+import { ParameterViewModal } from "@/components/setting-page/ParameterViewModal";
 
 const CATEGORY_SORT_CONFIG: Record<string, string[]> = {
   "Roll Pitch Yaw": ["Roll", "Pitch", "Yaw"],
@@ -46,7 +46,7 @@ export const SettingPage = () => {
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-12">
           {Object.entries(organizedFields).map(([category, fields]) => (
-            <FormSection key={category} title={category} fields={fields} />
+            <SettingFormSection key={category} title={category} fields={fields} />
           ))}
 
           <CustomButton buttonText="Submit" className="mt-4 flex w-full justify-center" />

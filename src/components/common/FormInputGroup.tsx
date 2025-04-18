@@ -2,7 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { FormSchema } from "@/schemas/form-schema";
 import { FormField } from "@/types/form";
 import { getFieldErrorMessage, hasFieldError } from "@/shared/utils/form-error";
-import { FormErrorMessage } from "@/components/FormErrorMessage";
+import { FormErrorMessage } from "@/components/common/FormErrorMessage";
 import { getFieldPlaceholder } from "@/shared/utils/form-placeholder";
 import { twMerge as tw } from "tailwind-merge";
 

@@ -1,7 +1,7 @@
-import { CustomModal } from "./CustomModal";
+import { CustomModal } from "@/components/common/CustomModal";
 import { FormSchema } from "@/schemas/form-schema";
 import { getJsonString } from "@/shared/lib/get-json-string";
-import { CustomButton } from "./CustomButton";
+import { CustomButton } from "@/components/common/CustomButton";
 
 interface ParameterViewModalProps {
   isOpen: boolean;

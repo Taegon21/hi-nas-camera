@@ -1,6 +1,6 @@
 import { FormField, FormOption } from "@/types/form";
-import { FormRadioGroup } from "./FormRadioGroup";
-import { FormInputGroup } from "./FormInputGroup";
+import { FormRadioGroup } from "@/components/common/FormRadioGroup";
+import { FormInputGroup } from "@/components/common/FormInputGroup";
 import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
 
 interface FormSectionProps {
@@ -28,7 +28,7 @@ const cameraLabelFormatter = (category: string, label: string): string => {
   return `${position} ${axis}`;
 };
 
-export const FormSection = ({ title, fields }: FormSectionProps) => {
+export const SettingFormSection = ({ title, fields }: FormSectionProps) => {
   return (
     <>
       <h3 className="mb-6 text-2xl font-bold">{title}</h3>
