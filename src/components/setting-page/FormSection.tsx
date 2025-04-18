@@ -1,6 +1,6 @@
 import { FormField, FormOption } from "@/types/form";
-import { FormRadioGroup } from "./FormRadioGroup";
-import { FormInputGroup } from "./FormInputGroup";
+import { FormRadioGroup } from "@/components/common/FormRadioGroup";
+import { FormInputGroup } from "@/components/common/FormInputGroup";
 import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
 
 interface FormSectionProps {
