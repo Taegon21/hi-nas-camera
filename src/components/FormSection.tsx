@@ -8,9 +8,24 @@ interface FormSectionProps {
   fields: FormField[];
 }
 
-const RADIO_OPTIONS: Record<string, FormOption<string>[]> = {
+const DEFAULT_OPTIONS: Record<string, FormOption<string>[]> = {
   ship_type: SHIP_OPTIONS,
   engine: ENGINE_OPTIONS,
+};
+
+const cameraLabelFormatter = (category: string, label: string): string => {
+  if (!category.includes("Cam")) return label;
+
+  let position = "";
+  if (label.includes("Left")) position = "Left";
+  else if (label.includes("Center")) position = "Center";
+  else if (label.includes("Right")) position = "Right";
+
+  let axis = "";
+  if (label.includes("X")) axis = "X";
+  else if (label.includes("Y")) axis = "Y";
+
+  return `${position} ${axis}`;
 };
 
 export const FormSection = ({ title, fields }: FormSectionProps) => {
@@ -20,9 +35,9 @@ export const FormSection = ({ title, fields }: FormSectionProps) => {
       <div className="grid gap-4">
         {fields.map((field) =>
           field.type === "radio" ? (
-            <FormRadioGroup key={field.name} field={field} options={RADIO_OPTIONS[field.name]} />
+            <FormRadioGroup key={field.name} field={field} options={DEFAULT_OPTIONS[field.name]} />
           ) : (
-            <FormInputGroup key={field.name} field={field} />
+            <FormInputGroup key={field.name} field={field} formatLabel={cameraLabelFormatter} />
           )
         )}
       </div>

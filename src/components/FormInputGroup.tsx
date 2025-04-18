@@ -6,22 +6,17 @@ import { FormErrorMessage } from "@/components/FormErrorMessage";
 import { getFieldPlaceholder } from "@/shared/utils/form-placeholder";
 import { twMerge as tw } from "tailwind-merge";
 
-const formatDisplayLabel = (category: string, label: string): string => {
-  if (!category.includes("Cam")) return label;
+interface FormInputGroupProps {
+  field: FormField;
+  formatLabel?: (category: string, label: string) => string;
+}
 
-  let position = "";
-  if (label.includes("Left")) position = "Left";
-  else if (label.includes("Center")) position = "Center";
-  else if (label.includes("Right")) position = "Right";
+const defaultLabelFormatter = (_category: string, label: string): string => label;
 
-  let axis = "";
-  if (label.includes("X")) axis = "X";
-  else if (label.includes("Y")) axis = "Y";
-
-  return `${position} ${axis}`;
-};
-
-export const FormInputGroup = ({ field }: { field: FormField }) => {
+export const FormInputGroup = ({
+  field,
+  formatLabel = defaultLabelFormatter,
+}: FormInputGroupProps) => {
   const {
     register,
     formState: { errors },
@@ -30,7 +25,7 @@ export const FormInputGroup = ({ field }: { field: FormField }) => {
   const { category, name, label, type } = field;
 
   const errorMessage = getFieldErrorMessage(errors, name);
-  const displayLabel = formatDisplayLabel(category, label);
+  const displayLabel = formatLabel(category, label);
   const placeholder = getFieldPlaceholder(category, name);
   const hasError = hasFieldError(errors, name);
 
