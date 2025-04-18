@@ -1,5 +1,6 @@
 import { FormField } from "@/types/form";
-import { FormFieldList } from "@/components/FormFieldList";
+import { FormRadioGroup } from "./FormRadioGroup";
+import { FormInputGroup } from "./FormInputGroup";
 
 interface FormSectionProps {
   title: string;
@@ -11,7 +12,13 @@ export const FormSection = ({ title, fields }: FormSectionProps) => {
     <>
       <h3 className="mb-6 text-2xl font-bold">{title}</h3>
       <div className="grid gap-4">
-        <FormFieldList category={title} fields={fields} />
+        {fields.map((field) =>
+          field.type === "radio" ? (
+            <FormRadioGroup key={field.name} field={field} />
+          ) : (
+            <FormInputGroup key={field.name} field={field} />
+          )
+        )}
       </div>
     </>
   );
