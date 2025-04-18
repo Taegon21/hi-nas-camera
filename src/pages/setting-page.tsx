@@ -1,12 +1,16 @@
+import { useState, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formSchema, FormSchema } from "@/schemas/form-schema";
 import { FORM_FIELDS } from "@/constants/form-fields";
 import { FormSection } from "@/components/FormSection";
-import { groupFieldsByCategory } from "@/shared/utils/category";
+import { groupFieldsByCategory, sortFieldsByOrder } from "@/shared/utils/form-fields-utils";
 import { CustomButton } from "@/components/CustomButton";
 import { ParameterViewModal } from "@/components/ParameterViewModal";
-import { useState } from "react";
+
+const CATEGORY_SORT_CONFIG: Record<string, string[]> = {
+  "Roll Pitch Yaw": ["Roll", "Pitch", "Yaw"],
+};
 
 export const SettingPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -16,7 +20,20 @@ export const SettingPage = () => {
     resolver: zodResolver(formSchema),
   });
 
-  const fieldsByCategory = groupFieldsByCategory(FORM_FIELDS);
+  const organizedFields = useMemo(() => {
+    const categorizedFields = groupFieldsByCategory(FORM_FIELDS);
+
+    Object.entries(CATEGORY_SORT_CONFIG)
+      .filter(([categoryName]) => categorizedFields[categoryName])
+      .forEach(([categoryName, displayOrder]) => {
+        categorizedFields[categoryName] = sortFieldsByOrder(
+          categorizedFields[categoryName],
+          displayOrder
+        );
+      });
+
+    return categorizedFields;
+  }, []);
 
   const onSubmit = (data: FormSchema) => {
     setFormData(data);
@@ -28,7 +45,7 @@ export const SettingPage = () => {
       <h2 className="mb-12 text-3xl font-bold">Camera Parameter</h2>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-12">
-          {Object.entries(fieldsByCategory).map(([category, fields]) => (
+          {Object.entries(organizedFields).map(([category, fields]) => (
             <FormSection key={category} title={category} fields={fields} />
           ))}
 
