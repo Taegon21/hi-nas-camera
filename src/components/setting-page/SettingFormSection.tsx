@@ -28,7 +28,7 @@ const cameraLabelFormatter = (category: string, label: string): string => {
   return `${position} ${axis}`;
 };
 
-export const FormSection = ({ title, fields }: FormSectionProps) => {
+export const SettingFormSection = ({ title, fields }: FormSectionProps) => {
   return (
     <>
       <h3 className="mb-6 text-2xl font-bold">{title}</h3>
