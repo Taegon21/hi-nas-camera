@@ -1,23 +1,27 @@
 import { useFormContext } from "react-hook-form";
 import { FormSchema } from "@/schemas/form-schema";
-import { FormField } from "@/types/form";
-import { SHIP_OPTIONS, ENGINE_OPTIONS } from "@/constants/form-options";
+import { FormField, FormOption } from "@/types/form";
 import { FormErrorMessage } from "@/components/FormErrorMessage";
 import { getFieldErrorMessage, hasFieldError } from "@/shared/utils/form-error";
 import { twMerge as tw } from "tailwind-merge";
 
-export const FormRadioGroup = ({ field }: { field: FormField }) => {
+interface FormRadioGroupProps {
+  field: FormField;
+  options?: FormOption<string>[];
+}
+
+export const FormRadioGroup = ({ field, options }: FormRadioGroupProps) => {
   const {
     register,
     formState: { errors },
   } = useFormContext<FormSchema>();
   const { name, label } = field;
 
-  const options = name === "ship_type" ? SHIP_OPTIONS : ENGINE_OPTIONS;
+  const radioOptions = options || [];
   const errorMessage = getFieldErrorMessage(errors, name);
   const hasError = hasFieldError(errors, name);
 
-  const isHorizontalLayout = options.length <= 2;
+  const isHorizontalLayout = radioOptions.length <= 2;
 
   return (
     <div className="space-y-4">
@@ -25,7 +29,7 @@ export const FormRadioGroup = ({ field }: { field: FormField }) => {
         {label}
       </div>
       <div className={isHorizontalLayout ? "flex space-x-6" : "space-y-4"}>
-        {options.map((option) => (
+        {radioOptions.map((option) => (
           <div key={option.value} className="flex items-center">
             <div className="relative flex items-center">
               <input
