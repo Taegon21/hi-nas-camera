@@ -2,6 +2,7 @@ import { CustomModal } from "@/components/common/CustomModal";
 import { FormSchema } from "@/schemas/form-schema";
 import { getJsonString } from "@/shared/lib/get-json-string";
 import { CustomButton } from "@/components/common/CustomButton";
+import { UI_STRINGS } from "@/constants/ui-string";
 
 interface ParameterViewModalProps {
   isOpen: boolean;
@@ -20,7 +21,7 @@ export const ParameterViewModal = ({ isOpen, onClose, data }: ParameterViewModal
         {formattedData}
       </pre>
       <div className="flex justify-end">
-        <CustomButton buttonText="Close" className="w-auto" onClick={onClose} type="button" />
+        <CustomButton buttonText={UI_STRINGS.BUTTON_CLOSE} className="w-auto" onClick={onClose} type="button" />
       </div>
     </CustomModal>
   );

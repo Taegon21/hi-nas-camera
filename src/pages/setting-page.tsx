@@ -7,6 +7,7 @@ import { SettingFormSection } from "@/components/setting-page/SettingFormSection
 import { groupFieldsByCategory, sortFieldsByOrder } from "@/shared/utils/form-fields-utils";
 import { CustomButton } from "@/components/common/CustomButton";
 import { ParameterViewModal } from "@/components/setting-page/ParameterViewModal";
+import { UI_STRINGS } from "@/constants/ui-string";
 
 const CATEGORY_SORT_CONFIG: Record<string, string[]> = {
   "Roll Pitch Yaw": ["Roll", "Pitch", "Yaw"],
@@ -42,14 +43,14 @@ export const SettingPage = () => {
 
   return (
     <div className="mx-auto max-w-xl p-6">
-      <h2 className="mb-12 text-3xl font-bold">Camera Parameter</h2>
+      <h2 className="mb-12 text-3xl font-bold">{UI_STRINGS.TITLE}</h2>
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-12">
           {Object.entries(organizedFields).map(([category, fields]) => (
             <SettingFormSection key={category} title={category} fields={fields} />
           ))}
 
-          <CustomButton buttonText="Submit" className="mt-4 flex w-full justify-center" />
+          <CustomButton buttonText={UI_STRINGS.BUTTON_SUBMIT} className="mt-4 flex w-full justify-center" />
         </form>
       </FormProvider>
 
